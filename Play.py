@@ -1,11 +1,12 @@
-from pytube import Playlist
-import pytube as pt
-from moviepy.editor import *
 import re
 
+import pytube as pt
+from moviepy.editor import *
+from pytube import Playlist
 
-def run(video_url):
-    PATH = "C:/Users/karmi/Desktop/Youtube/"
+
+def run(video_url, title):
+    PATH = "C:/Users/karmi/Desktop/Youtube/" + title + "/"
     V_EXT = ".mp4"
     A_EXT = ".mp3"
 
@@ -32,12 +33,15 @@ def run(video_url):
 
 
 def download(playlist_url):
-    playlist = Playlist(playlist_url)
+    playlist_url = playlist_url.split("::")
+    playlist = Playlist(playlist_url[0])
     # this fixes the empty playlist.videos list
     playlist._video_regex = re.compile(r"\"url\":\"(/watch\?v=[\w-]*)")
 
+    playlist.download_all()
+
     for url in playlist.video_urls:
-        run(url)
+        run(url, playlist_url[1])
 
 
 def start():
