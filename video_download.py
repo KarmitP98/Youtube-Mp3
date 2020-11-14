@@ -1,6 +1,8 @@
+import re
+
 import pytube as pt
 from moviepy.editor import *
-import re
+
 
 def run():
     PATH = "C:/Users/karmi/Desktop/Youtube/"
