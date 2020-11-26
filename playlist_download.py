@@ -1,4 +1,5 @@
 import re
+from datetime import datetime
 
 import pytube as pt
 from moviepy.editor import *
@@ -18,12 +19,15 @@ def download_video(video_url: str, play_list_name: str, count: int, index: int):
         file_name = re.sub("[^A-Za-z0-9]+", " ", yt.title).title()
         file_name = re.sub("^\s+", "", file_name)
         file_name = re.sub("$\s+", "", file_name)
+        if len(file_name) == 0:
+            file_name = str(datetime.now())
         print(file_name + V_EXT)
         # Get the first stream (Usually the lowest quality, we just care about the audio here so it is fine!)
         video = yt.streams.first()
         # Download it at this location
         video.download(PATH, file_name)
-        return file_name
+        if file_name != "none":
+            return file_name
 
     except Exception as e:
         print(e)
@@ -68,7 +72,9 @@ def download(playlist_url: str, play_list_name: str):
 
 
 def start():
-    download(playlist_url=input("Enter the Youtube Playlist URL: "), play_list_name=input("Enter the playlist Name: "))
+    while (1):
+        download(playlist_url=input("Enter the Youtube Playlist URL: "),
+                 play_list_name=input("Enter the playlist Name: "))
 
 
 if __name__ == "__main__":
