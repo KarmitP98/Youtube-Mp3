@@ -25,7 +25,7 @@ def download_video(video_url: str, play_list_name: str, count: int, index: int):
         # Get the first stream (Usually the lowest quality, we just care about the audio here so it is fine!)
         video = yt.streams.first()
         # Download it at this location
-        video.download(PATH, file_name)
+        video.download(PATH, file_name + V_EXT)
         if file_name != "none":
             return file_name
 
