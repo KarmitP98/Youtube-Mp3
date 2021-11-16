@@ -32,15 +32,11 @@ def download_video(video_url: str, play_list_name: str, count: int, index: int, 
         download_file = True
         # Download it at this location
         if download_mode == "1":
-            if file_exists(file_name + a_ext, path):
+            if file_exists(file_name + a_ext, path) or file_exists(file_name + v_ext, path):
                 download_file = False
 
-        if download_mode == "2":
+        if download_mode == "2" or download_mode == "3":
             if file_exists(file_name + v_ext, path):
-                download_file = False
-
-        if download_mode == "3":
-            if file_exists(file_name + v_ext, path) and file_exists(file_name + a_ext, path):
                 download_file = False
 
         if download_file:
@@ -70,11 +66,11 @@ def convert_video(file_name, play_list_name: str, download_mode):
             vid = VideoFileClip(os.path.join(path + file_name + v_ext))
             vid.audio.write_audiofile(os.path.join(path + file_name + a_ext))
             vid.close()
+            if download_mode == "1":
+                os.remove(path + file_name + v_ext)
         else:
             print(file_name + " already exists!")
         print("*****----------------------------------*****")
-        if download_mode == "1":
-            os.remove(path + file_name + v_ext)
 
 
 # Download the playlist
