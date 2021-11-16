@@ -28,7 +28,7 @@ def download_video(video_url: str, play_list_name: str, count: int, index: int, 
         if len(file_name) == 0:
             file_name = str(datetime.now())
         # Get the first stream (Usually the lowest quality, we just care about the audio here so it is fine!)
-        video = yt.streams.get_highest_resolution()
+        video = yt.streams.get_audio_only() if download_mode == "1" else yt.streams.get_highest_resolution()
         download_file = True
         # Download it at this location
         if download_mode == "1":
@@ -43,7 +43,7 @@ def download_video(video_url: str, play_list_name: str, count: int, index: int, 
             print("Downloading...")
             print(file_name + v_ext)
             print("Link: " + video_url)
-            video.download(path, file_name + v_ext)
+            video.download(path, file_name + (v_ext if download_mode != "1" else a_ext))
         else:
             print(file_name + " already exists!")
         print("*****----------------------------------*****")
@@ -89,7 +89,7 @@ def download_playlist(playlist_url: str, download_mode: str):
 
     index = 1
 
-    if download_mode != "2":
+    if download_mode == "3":
         print("\n\nStarting Conversion")
         for file in files:
             if file != "none":
