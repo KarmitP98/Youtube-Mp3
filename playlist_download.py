@@ -98,11 +98,26 @@ def download_playlist(playlist_url: str, download_mode: str):
 
 # Start the application
 def start():
-    download_playlist(playlist_url=input("Enter the Youtube Playlist URL: "),
-                      download_mode=input(
-                          "What do you want to download?\n(1) Audio Only\n(2) Video Only\n(3) Audio and Video\nPick "
-                          "any option ["
-                          "1/2/3]: "))
+    refresh = input("Press (R) to refresh saved playlists or enter a new Playlist URL: ")
+    if refresh == "r" or refresh == "R":
+        f = open("playlists.txt", "r")
+        lines = f.readlines()
+        for line in lines:
+            download_playlist(line.split(' ')[0], "1")
+        f.close()
+    else:
+        playlist_url = refresh
+        download_mode = input(
+            "What do you want to download?\n(1) Audio Only\n(2) Video Only\n(3) Audio and "
+            "Video\nPick "
+            "any option ["
+            "1/2/3]: ")
+
+        download_playlist(playlist_url, download_mode)
+        f = open("playlists.txt", "a")
+        new_line = playlist_url + ' ' + download_mode
+        f.write("\n" + new_line)
+        f.close()
 
 
 if __name__ == "__main__":
