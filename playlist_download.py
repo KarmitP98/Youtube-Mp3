@@ -1,3 +1,4 @@
+import math
 import re
 from datetime import datetime
 
@@ -13,6 +14,35 @@ def file_exists(file_name: str, path: str):
     return False
 
 
+# on_progress_callback takes 4 parameters.
+def progress_check(chunk, file_handle, bytes_remaining=None):
+    # Gets the percentage of the file that has been downloaded.
+    percent = (100 * (file_size - bytes_remaining)) / file_size
+    a1 = "[*--------------------] {:00.0f}% downloaded".format(percent)
+    a2 = "[**-------------------] {:00.0f}% downloaded".format(percent)
+    a3 = "[***------------------] {:00.0f}% downloaded".format(percent)
+    a4 = "[****-----------------] {:00.0f}% downloaded".format(percent)
+    a5 = "[*****----------------] {:00.0f}% downloaded".format(percent)
+    a6 = "[******---------------] {:00.0f}% downloaded".format(percent)
+    a7 = "[*******--------------] {:00.0f}% downloaded".format(percent)
+    a8 = "[********-------------] {:00.0f}% downloaded".format(percent)
+    a9 = "[*********------------] {:00.0f}% downloaded".format(percent)
+    a10 = "[**********-----------] {:00.0f}% downloaded".format(percent)
+    a11 = "[***********----------] {:00.0f}% downloaded".format(percent)
+    a12 = "[************---------] {:00.0f}% downloaded".format(percent)
+    a13 = "[*************--------] {:00.0f}% downloaded".format(percent)
+    a14 = "[**************-------] {:00.0f}% downloaded".format(percent)
+    a15 = "[***************------] {:00.0f}% downloaded".format(percent)
+    a16 = "[****************-----] {:00.0f}% downloaded".format(percent)
+    a17 = "[*****************----] {:00.0f}% downloaded".format(percent)
+    a18 = "[******************---] {:00.0f}% downloaded".format(percent)
+    a19 = "[*******************--] {:00.0f}% downloaded".format(percent)
+    a20 = "[********************-] {:00.0f}% downloaded".format(percent)
+    a21 = "[*********************] {:00.0f}% downloaded".format(percent)
+    p_list = [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21]
+    print(p_list[math.floor(percent / 5)], end="\r")
+
+
 # Download the video from Youtube and return the filename
 def download_video(video_url: str, play_list_name: str, count: int, index: int, download_mode):
     path = "./Downloads/" + play_list_name + "/"
@@ -20,7 +50,7 @@ def download_video(video_url: str, play_list_name: str, count: int, index: int, 
     a_ext = ".mp3"
 
     try:
-        yt = pt.YouTube(video_url)
+        yt = pt.YouTube(video_url, on_progress_callback=progress_check)
         # Set File-Name
         file_name = re.sub("[^A-Za-z0-9]+", " ", yt.title).title()
         file_name = re.sub('^\s+', "", file_name)
@@ -40,10 +70,13 @@ def download_video(video_url: str, play_list_name: str, count: int, index: int, 
                 download_file = False
 
         if download_file:
+            global file_size
+            file_size = video.filesize
             print("Downloading...")
-            print(file_name + v_ext)
+            print(file_name + (v_ext if download_mode != "1" else a_ext))
             print("Link: " + video_url)
             video.download(path, file_name + (v_ext if download_mode != "1" else a_ext))
+            print("Download Complete!                                                                             ")
         else:
             print(file_name + " already exists!")
         print("*****----------------------------------*****")
@@ -122,3 +155,5 @@ def start():
 
 if __name__ == "__main__":
     start()
+
+file_size = 0
