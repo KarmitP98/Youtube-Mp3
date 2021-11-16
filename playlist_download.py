@@ -6,42 +6,14 @@ from moviepy.editor import *
 from pytube import Playlist
 
 
-# class DownloadAndConvert(threading.Thread):
-#     def __init__(self, id, playlist, name, download_mode):
-#         threading.Thread.__init__(self)
-#         self.playlist = playlist
-#         self.name = name
-#         self.id = id
-#         self.download_mode = download_mode
-#
-#     def run(self) -> None:
-#         files = []
-#         index = 0
-#         for url in self.playlist:
-#             files.append(download_video(url, self.name, len(self.playlist), index, download_mode=self.download_mode))
-#             index += 1
-#
-#         print(files)
-#         index = 1
-#         print("\n\nStarting Conversion")
-#
-#         for file in files:
-#             print(file)
-#             if file != "none":
-#                 convert_video(file_name=file, play_list_name=self.name, count=len(files), index=index,
-#                               download_mode=self.download_mode)
-#                 index += 1
-#
-#     def stopThread(self, name):
-#         name.exit()
-
-
+# Check if the file exists
 def file_exists(file_name: str, path: str):
     if os.path.isfile(path + file_name):
         return True
     return False
 
 
+# Download the video from Youtube and return the filename
 def download_video(video_url: str, play_list_name: str, count: int, index: int, download_mode):
     path = "./Downloads/" + play_list_name + "/"
     v_ext = ".mp4"
@@ -86,6 +58,7 @@ def download_video(video_url: str, play_list_name: str, count: int, index: int, 
         print(e)
 
 
+# Convert the video in the directory
 def convert_video(file_name, play_list_name: str, download_mode):
     path = "./Downloads/" + play_list_name + "/"
     v_ext = ".mp4"
@@ -104,6 +77,7 @@ def convert_video(file_name, play_list_name: str, download_mode):
             os.remove(path + file_name + v_ext)
 
 
+# Download the playlist
 def download_playlist(playlist_url: str, download_mode: str):
     playlist = Playlist(playlist_url)
 
@@ -126,12 +100,13 @@ def download_playlist(playlist_url: str, download_mode: str):
                 convert_video(file_name=file, play_list_name=title, download_mode=download_mode)
 
 
+# Start the application
 def start():
     download_playlist(playlist_url=input("Enter the Youtube Playlist URL: "),
                       download_mode=input(
                           "What do you want to download?\n(1) Audio Only\n(2) Video Only\n(3) Audio and Video\nPick "
                           "any option ["
-                          "1/2/3]:"))
+                          "1/2/3]: "))
 
 
 if __name__ == "__main__":
