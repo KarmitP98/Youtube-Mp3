@@ -42,7 +42,7 @@ def start():
     global file_size
     file_size = video_type.filesize
     # Starts the download process
-    video_type.download(file_path())
+    video_type.download(file_path(), input("Do you also want to download the video?"))
 
     print("Ready to download another video.\n\n")
     start()

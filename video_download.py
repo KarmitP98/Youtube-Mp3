@@ -1,4 +1,3 @@
-import os
 import re
 
 import pytube as pt
@@ -49,7 +48,7 @@ def getVideoFromYoutube(video_url):
 
         file_size = video_type.filesize
 
-        video_type.download(getFilePath(), file_name)
+        video_type.download(getFilePath(), input("Do you also want to download the video?"))
 
     except Exception as e:
         print("Video not found!")
