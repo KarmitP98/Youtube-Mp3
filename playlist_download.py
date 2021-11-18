@@ -7,6 +7,13 @@ from moviepy.editor import *
 from pytube import Playlist
 
 
+# Get File Path
+def get_file_path():
+    home = os.path.expanduser('~')
+    download_path = os.path.join(home, 'Downloads\\Youtube\\')
+    return download_path
+
+
 # Check if the file exists
 def file_exists(file_name: str, path: str):
     if os.path.isfile(path + file_name):
@@ -45,7 +52,7 @@ def progress_check(chunk, file_handle, bytes_remaining=None):
 
 # Download the video from Youtube and return the filename
 def download_video(video_url: str, play_list_name: str, count: int, index: int, download_mode):
-    path = "./Downloads/" + play_list_name + "/"
+    path = get_file_path() + "\\" + play_list_name + "\\"
     v_ext = ".mp4"
     a_ext = ".mp3"
 
@@ -89,7 +96,7 @@ def download_video(video_url: str, play_list_name: str, count: int, index: int, 
 
 # Convert the video in the directory
 def convert_video(file_name, play_list_name: str, download_mode):
-    path = "./Downloads/" + play_list_name + "/"
+    path = get_file_path() + "\\" + play_list_name + "\\"
     v_ext = ".mp4"
     a_ext = ".mp3"
     if file_exists(file_name + v_ext, path):
