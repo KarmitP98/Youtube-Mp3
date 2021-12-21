@@ -2,11 +2,6 @@ import io
 import os
 import zipfile
 
-from flask import send_file
-
-from playlist import download_playlist
-from video import download_youtube_video
-
 
 # Check if variable is a list
 def is_list(variable):
@@ -40,12 +35,3 @@ def zip_files(files):
 		data.seek(0)
 		return data
 
-
-def get_zipped(url: str, mode: int, file_location: str, url_type: str = 'file'):
-	if url_type == 'file':
-		files = download_youtube_video(url = url, mode = mode, file_location = file_location)
-	else:
-		files = download_playlist(playlist_url = url, mode = mode, file_location = file_location)
-	zip_file = zip_files(files)
-	delete_files(files)
-	return send_file(zip_file, attachment_filename = 'download.zip', as_attachment = True)
